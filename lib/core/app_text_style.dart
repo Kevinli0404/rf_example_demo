@@ -26,6 +26,20 @@ abstract class AppTextStyle {
     letterSpacing: 0.8.sp,
   );
 
+  static TextStyle get medium14 => TextStyle(
+    fontFamily: _family,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.0,
+  );
+
+  static TextStyle get regular11 => TextStyle(
+    fontFamily: _family,
+    fontSize: 11.sp,
+    fontWeight: FontWeight.w400,
+    height: 1.0,
+  );
+
   static TextStyle get medium16 => TextStyle(
     fontFamily: _family,
     fontSize: 16.sp,
