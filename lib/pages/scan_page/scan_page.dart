@@ -71,10 +71,24 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
           return Column(
             children: [
-              _buildStatusBar(),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 8.h),
-                child: _buildSearchBar(),
+              Container(
+                margin: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 12.h),
+                padding: EdgeInsets.all(10.w),
+                decoration: BoxDecoration(
+                  color: AppColors.deepGrey.withValues(alpha: 0.6),
+                  borderRadius: BorderRadius.circular(14.w),
+                  border: Border.all(
+                    color: AppColors.white.withValues(alpha: 0.05),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    _buildStatusBar(),
+                    SizedBox(height: 8.h),
+                    _buildSearchBar(),
+                  ],
+                ),
               ),
               Expanded(child: _buildDeviceList(filtered)),
               _buildBottomBar(),
@@ -94,7 +108,6 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     final scanning = _controller.scanning;
 
     return Container(
-      margin: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
         color: AppColors.deepGrey,
@@ -269,9 +282,12 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   Widget _buildDeviceCard(Device device, int index) {
     final isUnknown = isUnknownDeviceId(device.id);
     final accentColor = isUnknown ? AppColors.secondary : AppColors.primary;
+    final epcShort = device.epc.length > 12
+        ? '${device.epc.substring(0, 12)}…'
+        : device.epc;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 9.h),
       decoration: BoxDecoration(
         color: AppColors.deepGrey,
         borderRadius: BorderRadius.circular(12.w),
@@ -286,8 +302,8 @@ class _ScanPageState extends ConsumerState<ScanPage> {
         children: [
           // 序號圓圈
           Container(
-            width: 36.w,
-            height: 36.w,
+            width: 30.w,
+            height: 30.w,
             decoration: BoxDecoration(
               color: accentColor.withValues(alpha: 0.15),
               shape: BoxShape.circle,
@@ -299,7 +315,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               ),
             ),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: 10.w),
           // 設備資訊
           Expanded(
             child: Column(
@@ -307,18 +323,20 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               children: [
                 Text(
                   device.name,
-                  style: AppTextStyle.medium16.copyWith(
+                  style: AppTextStyle.medium14.copyWith(
                     color: isUnknown ? AppColors.secondary : AppColors.white,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 3.h),
+                SizedBox(height: 2.h),
                 Text(
                   device.instrumentNumber,
                   style: AppTextStyle.regular12.copyWith(
                     color: AppColors.textGreyIt,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -326,14 +344,14 @@ class _ScanPageState extends ConsumerState<ScanPage> {
           SizedBox(width: 8.w),
           // EPC chip
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.h),
             decoration: BoxDecoration(
               color: AppColors.black.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(6.w),
             ),
             child: Text(
-              device.epc,
-              style: AppTextStyle.regular12.copyWith(
+              epcShort,
+              style: AppTextStyle.regular11.copyWith(
                 color: AppColors.textGreyIt,
                 fontFamily: 'monospace',
               ),
