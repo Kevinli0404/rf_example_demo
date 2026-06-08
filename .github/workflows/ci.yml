@@ -22,6 +22,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Fix sqlite3 native assets
+        run: |
+          SQLITE_VERSION=$(flutter pub deps --json | python3 -c "import sys,json; deps=json.load(sys.stdin)['packages']; print(next(p['version'] for p in deps if p['name']=='sqlite3'))")
+          CACHE_DIR="$HOME/.pub-cache/hosted/pub.dev/sqlite3-$SQLITE_VERSION"
+          mkdir -p "$CACHE_DIR"
+          BASE_URL="https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-$SQLITE_VERSION"
+          curl -fsSL "$BASE_URL/libsqlite3.x64.linux.so" -o "$CACHE_DIR/libsqlite3.x64.linux.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.arm.android.so" -o "$CACHE_DIR/libsqlite3.arm.android.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.arm64.android.so" -o "$CACHE_DIR/libsqlite3.arm64.android.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.x64.android.so" -o "$CACHE_DIR/libsqlite3.x64.android.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.x86.android.so" -o "$CACHE_DIR/libsqlite3.x86.android.so" || true
+
       - name: Analyze
         run: flutter analyze
 
@@ -44,6 +56,18 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Fix sqlite3 native assets
+        run: |
+          SQLITE_VERSION=$(flutter pub deps --json | python3 -c "import sys,json; deps=json.load(sys.stdin)['packages']; print(next(p['version'] for p in deps if p['name']=='sqlite3'))")
+          CACHE_DIR="$HOME/.pub-cache/hosted/pub.dev/sqlite3-$SQLITE_VERSION"
+          mkdir -p "$CACHE_DIR"
+          BASE_URL="https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-$SQLITE_VERSION"
+          curl -fsSL "$BASE_URL/libsqlite3.x64.linux.so" -o "$CACHE_DIR/libsqlite3.x64.linux.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.arm.android.so" -o "$CACHE_DIR/libsqlite3.arm.android.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.arm64.android.so" -o "$CACHE_DIR/libsqlite3.arm64.android.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.x64.android.so" -o "$CACHE_DIR/libsqlite3.x64.android.so" || true
+          curl -fsSL "$BASE_URL/libsqlite3.x86.android.so" -o "$CACHE_DIR/libsqlite3.x86.android.so" || true
 
       - name: Write google-services.json (dev)
         run: |
@@ -71,7 +95,7 @@ jobs:
     name: Build prod APK
     runs-on: ubuntu-latest
     needs: analyze-and-test
-    if: startsWith(github.ref, 'refs/tags/v')  # 只在 push tag 時跑
+    if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
       - uses: actions/checkout@v4
