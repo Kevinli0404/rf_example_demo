@@ -29,7 +29,7 @@ class ScanFileNameException implements Exception {
   }
 }
 
-/// 基本驗證（空白 + 非法字元），通過則回傳 trimmed 字串
+// 基本檔名驗證，通過回傳 trimmed 字串
 String validateFileName(String raw) {
   final trimmed = raw.trim();
   if (trimmed.isEmpty) throw const ScanFileNameException(ScanFileNameError.empty);
@@ -37,11 +37,10 @@ String validateFileName(String raw) {
   return trimmed;
 }
 
-/// 已存於 RFIDExport/ 的單支掃描檔摘要
+/// RFIDExport/ 單支掃描檔摘要
 class ScanFileSummary {
   final File file;
-
-  /// 不含 .txt 的檔名（顯示用）
+  // 不含 .txt 的檔名
   final String displayName;
 
   final DateTime? exportTime;
@@ -55,7 +54,7 @@ class ScanFileSummary {
   });
 }
 
-/// RFIDExport/ 目錄的掃描檔管理：列出、讀取、改名、刪除
+/// RFIDExport/ 掃描檔管理
 class ScanFileService {
   static Future<Directory?> _getExportDir() async {
     try {
@@ -69,7 +68,7 @@ class ScanFileService {
     }
   }
 
-  /// 列出 RFIDExport/ 內格式合法的 .txt，依修改時間降冪排列
+  // 列出合法 .txt，依修改時間降冪
   Future<List<ScanFileSummary>> listValidScanFiles() async {
     final dir = await _getExportDir();
     if (dir == null) return const [];
@@ -96,7 +95,7 @@ class ScanFileService {
     return result;
   }
 
-  /// 解析單一檔案，格式不符回傳 null
+  // 解析單一檔案
   Future<ScanFileSummary?> _tryParseSummary(File file) async {
     try {
       final content = await file.readAsString();
@@ -135,10 +134,7 @@ class ScanFileService {
 
   // ─── 讀檔 + EPC 查 DB ────────────────────────────────────────────────────
 
-  /// Parse 一支檔案，把每筆 EPC 查 DB，組成顯示用 entry list
-  ///
-  /// DB 命中 → 白色（isUnknown = false）
-  /// DB 沒有 → 「未知設備 N」+ `-----`（isUnknown = true，viewer 著橘色）
+  // 讀檔並查 DB，組成顯示用 entry list
   Future<List<FileDeviceEntry>> readDevicesWithLookup({
     required File file,
     required DeviceRepository repository,
@@ -178,14 +174,12 @@ class ScanFileService {
 
   // ─── 刪除 / 改名 ──────────────────────────────────────────────────────────
 
-  /// 刪除檔案；不存在不丟 exception
+  // 刪除檔案
   Future<void> deleteScanFile(File file) async {
     if (await file.exists()) await file.delete();
   }
 
-  /// 改名前驗證（空白 / 非法字元 / 重複），成功回傳 null，失敗回傳錯誤訊息
-  ///
-  /// 傳入的 [currentFile] 用來排除「改成一樣的名字」視為重複的情況
+  // 改名前驗證
   Future<String?> validateRenameFilename(
     String newName,
     File currentFile,
@@ -206,7 +200,7 @@ class ScanFileService {
     }
   }
 
-  /// 同目錄改名，驗證失敗 → throw [ScanFileNameException]，OS 錯誤 → throw [ScanFileNameException.other]
+  // 改名
   Future<File> renameScanFile({
     required File file,
     required String newDisplayName,

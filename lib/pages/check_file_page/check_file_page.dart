@@ -474,7 +474,7 @@ class _CheckFilePageState extends ConsumerState<CheckFilePage> {
     }
   }
 
-  /// 點整列 → 讀檔 + EPC 查 DB → FileViewerDialog
+  // 點整列開啟檔案預覽
   Future<void> _onFileTap(ScanFileSummary file) async {
     final repo = ref.read(deviceRepositoryProvider);
     List<FileDeviceEntry> entries;

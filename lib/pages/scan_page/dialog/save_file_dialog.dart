@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rf_example/core/app_colors.dart';
 import 'package:rf_example/core/app_text_style.dart';
 
-/// 掃描結果儲存 dialog：可編輯檔名，驗證通過後回傳檔名；取消回傳 null
+/// 掃描結果儲存 dialog
 Future<String?> showSaveFileDialog(
   BuildContext context, {
   String? filenamePreview,

@@ -4,9 +4,6 @@ import 'package:rf_example/core/app_colors.dart';
 import 'package:rf_example/core/app_text_style.dart';
 
 /// 掃描檔重新命名 Dialog
-///
-/// 驗證通過後回傳新檔名；取消回傳 null。
-/// 驗證失敗時錯誤訊息顯示於 dialog 內部，不關閉。
 Future<String?> showRenameFileDialog(
   BuildContext context, {
   required String currentName,
