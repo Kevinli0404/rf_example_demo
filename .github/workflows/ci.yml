@@ -58,7 +58,14 @@ jobs:
         with:
           name: app-dev-debug
           path: build/app/outputs/flutter-apk/app-dev-debug.apk
-          retention-days: 7
+
+      - name: Deploy to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_DEV }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-dev-debug.apk
 
   build-prod:
     name: Build prod APK
@@ -83,4 +90,3 @@ jobs:
         with:
           name: app-prod-release
           path: build/app/outputs/flutter-apk/app-prod-release.apk
-          retention-days: 7
