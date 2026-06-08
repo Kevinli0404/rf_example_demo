@@ -5,10 +5,7 @@ import 'package:rf_example/data/models/device.dart';
 import 'package:rf_example/data/repositories/device_repository.dart';
 import 'package:rf_example/providers/rfid_providers.dart';
 
-/// 掃描 session 狀態管理（ChangeNotifier）
-///
-/// 硬體不可用時以 Timer 模擬掃描行為：從 DB 取出設備清單，
-/// 每 200ms emit 一筆並去重，邏輯層與真實版保持一致。
+/// 掃描 session 狀態管理，硬體不可用時以 Timer 模擬掃描
 class ScanSessionController extends ChangeNotifier {
   ScanSessionController({
     required DeviceRepository repository,
@@ -37,11 +34,7 @@ class ScanSessionController extends ChangeNotifier {
   bool get toggling => _toggling;
   int get totalCount => _scannedDevices.length;
 
-  /// 切換模擬掃描 開 / 關。
-  ///
-  /// 回傳非 null 字串代表有錯誤，讓 UI 顯示 SnackBar。
-  ///
-  /// 切換掃描開關；回傳非 null 字串表示錯誤訊息。
+  // 切換掃描開關，回傳非 null 字串表示錯誤
   Future<String?> toggleScan() async {
     if (_toggling) return null;
 
@@ -69,7 +62,7 @@ class ScanSessionController extends ChangeNotifier {
     return null;
   }
 
-  /// 從 DB 取全部設備 → 過濾已掃過的 → 啟動 800ms timer 逐筆 emit
+  // 從 DB 取設備，啟動模擬掃描 timer
   Future<void> _startSimulation() async {
     final allDevices = await _repo.getAllDevices();
 
@@ -102,7 +95,7 @@ class ScanSessionController extends ChangeNotifier {
     _pendingDevices.clear();
   }
 
-  /// 把一筆設備加進清單（模擬 tag read 命中 DB 的 Path 1）
+  // emit 一筆設備進清單
   void _emitDevice(Device device) {
     final upper = device.epc.toUpperCase();
     if (_seenEpcs.contains(upper)) return; // 理論上過濾後不應重複
@@ -117,7 +110,7 @@ class ScanSessionController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 手動補登：外部選好 device 後呼叫
+  // 手動補登
   void addManualDevice(Device device) {
     final upper = device.epc.toUpperCase();
     if (_seenEpcs.contains(upper)) return;
@@ -127,7 +120,7 @@ class ScanSessionController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 清空掃描清單
+  // 清空掃描清單
   void clearAll() {
     _scannedDevices.clear();
     _seenEpcs.clear();

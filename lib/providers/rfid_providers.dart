@@ -71,7 +71,7 @@ final connectStateProvider = StreamProvider<RfidConnectState>((ref) {
   );
 });
 
-/// rfidConnectFlow 執行期間為 true，用來讓 UI 顯示連線中動畫
+/// 連線流程執行中旗標
 class ConnectInFlightNotifier extends Notifier<bool> {
   @override
   bool build() => false;
@@ -83,7 +83,7 @@ final connectInFlightProvider = NotifierProvider<ConnectInFlightNotifier, bool>(
   ConnectInFlightNotifier.new,
 );
 
-/// connect flow 執行期間強制回傳 connecting，避免 native 事件延遲造成 UI 閃爍
+/// 連線狀態 provider，連線流程中強制顯示 connecting
 final effectiveConnectStateProvider = Provider<RfidConnectState>((ref) {
   if (ref.watch(connectInFlightProvider)) {
     return RfidConnectState.connecting;
@@ -133,7 +133,7 @@ final deviceStatusProvider =
       DeviceStatusNotifier.new,
     );
 
-/// initialize → connect 兩步驟流程，失敗時拋出 PlatformException
+/// RFID 連線流程（initialize → connect）
 class RfidConnectStepLog {
   final String step;
   final String? message;
@@ -170,7 +170,7 @@ Future<String?> rfidDisconnect() async {
   return cmdChannel.invokeMethod<String>('disconnect');
 }
 
-/// 觸發震動（掃到設備的觸覺回饋）
+/// 觸發震動
 void rfidVibrate({int durationMs = 100}) {
   // ignore: discarded_futures
   cmdChannel.invokeMethod<void>('vibrate', {'durationMs': durationMs});

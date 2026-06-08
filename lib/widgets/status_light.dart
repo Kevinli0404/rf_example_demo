@@ -4,9 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rf_example/core/app_text_style.dart';
 import 'package:rf_example/providers/rfid_providers.dart';
 
-/// 連線狀態徽章（68×22 圓角長條，給 AppBar 或任意位置使用）
-///
-/// 顏色直接讀 effectiveConnectStateProvider，不需要傳 props。
+/// 連線狀態徽章
 class StatusLight extends ConsumerWidget {
   final EdgeInsetsGeometry padding;
 

@@ -340,12 +340,11 @@ class _HeaderIconBtn extends StatelessWidget {
 // Helper 型別 + show function
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Dialog 顯示用的設備 entry（EPC 查 DB 後組成）
+/// Dialog 顯示用的設備 entry
 class FileDeviceEntry {
   final String name;
   final String instrument;
-
-  /// true → DB 沒有此 EPC，橘色左邊條 + 橘色文字
+  // true → DB 查無此 EPC，以橘色標示
   final bool isUnknown;
 
   const FileDeviceEntry({

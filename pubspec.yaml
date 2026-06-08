@@ -31,9 +31,13 @@ dependencies:
   # 系統檔案選擇器（匯入設備清單時備用）
   file_picker: ^8.1.6
 
+  # sqlite3 明確指定修復 hash 問題的版本
+  sqlite3: ^3.3.2
+
   # Firebase
   firebase_core: ^3.13.0
   firebase_crashlytics: ^4.3.0
+  firebase_messaging: ^15.2.5
 
 dev_dependencies:
   flutter_test:

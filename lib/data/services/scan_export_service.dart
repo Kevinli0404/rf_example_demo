@@ -5,20 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rf_example/data/models/device.dart';
 import 'package:rf_example/data/services/scan_file_service.dart';
 
-/// 掃描結果匯出服務
-///
-/// 寫入路徑：`<externalStorageDir>/RFIDExport/`，不需要 MANAGE_EXTERNAL_STORAGE，
-/// 可透過 `adb pull` 取出。
-///
-/// 輸出格式：
-/// ```json
-/// {
-///   "ExportTime": "2026-05-22T06:30:00Z",
-///   "Devices": [{ "Id": "...", "EPC": "...", "ScanTime": "..." }]
-/// }
-/// ```
+/// 掃描結果匯出服務，寫入 RFIDExport/ 目錄
 class ScanExportService {
-  /// 組出完整的匯出 JSON 字串
+  // 組出完整的匯出 JSON 字串
   static String buildJsonString({
     required List<Device> devices,
     required Map<String, DateTime> scanTimes,
@@ -34,7 +23,7 @@ class ScanExportService {
     return const JsonEncoder.withIndent('  ').convert(body);
   }
 
-  /// 預覽目前時間產生的預設檔名（含衝突後綴），供 dialog 顯示用
+  // 預覽預設檔名供 dialog 顯示
   static Future<String> previewFilename() async {
     final base = _dateTimePart(DateTime.now());
     final dir = await _getExportDir();
@@ -48,7 +37,7 @@ class ScanExportService {
     return filename;
   }
 
-  /// 驗證檔名（空白 / 非法字元 / 重複），成功回傳 null，失敗回傳錯誤訊息
+  // 檔名驗證
   static Future<String?> validateFilenameOnly(String filename) async {
     try {
       final trimmed = validateFileName(filename);
@@ -67,10 +56,7 @@ class ScanExportService {
     }
   }
 
-  /// 把掃描資料寫到 RFIDExport/，成功回傳完整路徑，失敗回傳 null
-  ///
-  /// [preferredFilename] 由 dialog 回傳的使用者自訂檔名（不含 .txt 也可）；
-  /// 不傳則以當前時間自動產生。
+  // 寫入 RFIDExport/
   static Future<String?> saveToExternalDir({
     required List<Device> devices,
     required Map<String, DateTime> scanTimes,
