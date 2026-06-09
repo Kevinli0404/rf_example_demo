@@ -20,12 +20,10 @@
   <tr>
     <td align="center"><b>同步設備</b></td>
     <td align="center"><b>查看檔案</b></td>
-    <td align="center"><b>FCM 推播</b></td>
   </tr>
   <tr>
     <td><img src="screenshots/device_list.png" width="200"/></td>
     <td><img src="screenshots/files.png" width="200"/></td>
-    <td><img src="screenshots/fcm.png" width="200"/></td>
   </tr>
 </table>
 
@@ -72,11 +70,80 @@ android/
         └── RfidEventListener.kt
 ```
 
-**採用 MVVM + Repository Pattern + Clean Architecture**
+**採用 MVVM + Repository Pattern**
 
-- Native 層透過 MethodChannel 接收 Flutter 指令，EventChannel 即時推送連線狀態與裝置資訊
-- Repository 統一管理 Drift 資料庫存取
-- ViewModel 封裝業務邏輯，Page 只負責 UI 渲染
+依賴方向單向，每一層只認識自己的下一層：
+
+```
+DeviceListPage              ← 只管畫面，資料來自 ViewModel
+  └─ DeviceListViewModel    ← 持有 UI state，需要資料就問 Repository
+       └─ DeviceRepository  ← 唯一碰資料庫的地方
+            └─ AppDatabase  ← Drift，底層 SQLite
+```
+
+- Page 透過 `ref.watch` 訂閱 ViewModel，state 變了自動重繪
+- ViewModel 不知道資料存在哪，只管呼叫 Repository 拿結果
+- Native 硬體事件透過 EventChannel 推進來，Page 不需要主動輪詢
+
+---
+
+## Native 整合（Kotlin · MethodChannel · EventChannel）
+
+Flutter 與 Kotlin 之間透過兩種 Channel 溝通：
+
+**MethodChannel** — Flutter 主動呼叫 Kotlin 的單次指令，用於連線、震動、警示音等操作：
+
+| | 程式碼 |
+|---|---|
+| Dart | `await cmdChannel.invokeMethod<String>('connect');` |
+| Kotlin | `"connect" -> rfidController.connect()` |
+
+**EventChannel** — Kotlin 主動推資料給 Flutter 的持續串流，用於連線狀態、電池電量等即時資訊：
+
+| | 程式碼 |
+|---|---|
+| Dart | `stateChannel.receiveBroadcastStream().map(...)` |
+| Kotlin | `eventSink?.success("Connected")` |
+
+Channel 名稱在兩側必須完全一致，任何一側改名都會導致 Silent Failure。
+
+---
+
+## 本地資料庫（Drift / SQLite）
+
+以 Drift 定義 type-safe schema，`build_runner` 自動生成 DAO 與 Companion class：
+
+```dart
+@DataClassName('DeviceEntity')
+class Devices extends Table {
+  TextColumn get uid        => text()();
+  TextColumn get serialCode => text()();
+  TextColumn get label      => text()();
+  TextColumn get registryId => text()();
+  TextColumn get category   => text()();
+  TextColumn get epc        => text()();
+
+  @override
+  Set<Column> get primaryKey => {uid};
+}
+```
+
+欄位調整時 bump `schemaVersion` 並加 migration，不需手寫 SQL：
+
+```dart
+@override
+int get schemaVersion => 2;
+
+@override
+MigrationStrategy get migration => MigrationStrategy(
+  onUpgrade: (m, from, to) async {
+    if (from < 2) {
+      await m.drop(devices);
+      await m.createTable(devices);
+    }
+  },
+);
+```
 
 ---
 
@@ -166,4 +233,4 @@ flutter analyze
 
 ## 範例資料
 
-`assets/sample_export.txt` 為範例設備清單，可直接匯入 app 測試同步功能。
+`assets/sample_export_0609.txt` 為範例設備清單，可直接匯入 app 測試同步功能。

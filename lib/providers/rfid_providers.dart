@@ -1,5 +1,4 @@
 // RFID channel 定義、連線狀態 enum、相關 provider。
-// 資料流向：Native (Kotlin) → EventChannel → StreamProvider → ref.watch → Page
 
 import 'dart:async';
 
@@ -12,10 +11,6 @@ const cmdChannel = MethodChannel('rfid_test/commands');
 const stateChannel = EventChannel('rfid_test/connection_state');
 const tagChannel = EventChannel('rfid_test/tag_read');
 const statusChannel = EventChannel('rfid_test/device_status');
-
-// =========================================================================
-// 連線狀態 enum
-// =========================================================================
 
 enum RfidConnectState {
   disconnected,
