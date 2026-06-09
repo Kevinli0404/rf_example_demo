@@ -443,7 +443,7 @@ class _CheckFilePageState extends ConsumerState<CheckFilePage> {
     try {
       await _service.deleteScanFile(file.file);
       if (!mounted) return;
-      showSuccessToast(context, message: '刪除成功');
+      showSuccessToast(context, message: '已刪除');
       await _refresh();
     } catch (e) {
       if (!mounted) return;
@@ -466,7 +466,7 @@ class _CheckFilePageState extends ConsumerState<CheckFilePage> {
         newDisplayName: newName,
       );
       if (!mounted) return;
-      showSuccessToast(context, message: '儲存成功');
+      showSuccessToast(context, message: '已更新');
       await _refresh();
     } catch (e) {
       if (!mounted) return;
