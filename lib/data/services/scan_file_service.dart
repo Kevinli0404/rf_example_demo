@@ -18,13 +18,13 @@ class ScanFileNameException implements Exception {
   String get message {
     switch (error) {
       case ScanFileNameError.empty:
-        return '檔名不能空白';
+        return '請輸入檔名';
       case ScanFileNameError.invalidChar:
-        return '檔名含有不允許的字元：/ \\ : * ? " < > |';
+        return '檔名不可包含：/ \\ : * ? " < > |';
       case ScanFileNameError.duplicate:
-        return '已存在同名檔案，請重新命名';
+        return '檔名已被使用，請換一個';
       case ScanFileNameError.other:
-        return '儲存失敗，請再試一次';
+        return '操作失敗，請再試一次';
     }
   }
 }
