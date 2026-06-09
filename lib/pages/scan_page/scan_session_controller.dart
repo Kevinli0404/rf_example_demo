@@ -101,10 +101,10 @@ class ScanSessionController extends ChangeNotifier {
     if (_seenEpcs.contains(upper)) return; // 理論上過濾後不應重複
 
     _seenEpcs.add(upper);
-    _scanTimes[device.id] = DateTime.now().toUtc();
+    _scanTimes[device.uid] = DateTime.now().toUtc();
     _scannedDevices.add(device);
 
-    debugPrint('[mock-scan] emit "${device.name}" (${device.epc})');
+    debugPrint('[mock-scan] emit "${device.label}" (${device.epc})');
 
     rfidVibrate(durationMs: 40); // 每筆觸覺回饋（Kotlin Vibrator，繞過 TOUCH=OFF 限制）
     notifyListeners();
@@ -115,7 +115,7 @@ class ScanSessionController extends ChangeNotifier {
     final upper = device.epc.toUpperCase();
     if (_seenEpcs.contains(upper)) return;
     _seenEpcs.add(upper);
-    _scanTimes[device.id] = DateTime.now().toUtc();
+    _scanTimes[device.uid] = DateTime.now().toUtc();
     _scannedDevices.add(device);
     notifyListeners();
   }

@@ -16,8 +16,8 @@ class ScanExportService {
     final body = {
       'ExportTime': _toUtcIso(now),
       'Devices': devices.map((d) {
-        final st = scanTimes[d.id]?.toUtc() ?? now;
-        return {'Id': d.id, 'EPC': d.epc, 'ScanTime': _toUtcIso(st)};
+        final st = scanTimes[d.uid]?.toUtc() ?? now;
+        return {'Uid': d.uid, 'EPC': d.epc, 'ScanTime': _toUtcIso(st)};
       }).toList(),
     };
     return const JsonEncoder.withIndent('  ').convert(body);

@@ -7,11 +7,11 @@ import 'package:rf_example/data/services/scan_export_service.dart';
 final _utcIsoRegex = RegExp(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$');
 
 const _sampleDevice = Device(
-  id: 'dev-001',
-  instrumentNumber: 'INS-001',
-  name: '頻譜分析儀',
-  assetNumber: 'ASSET-001',
-  unit: '量測組',
+  uid: 'dev-001',
+  serialCode: 'INS-001',
+  label: '頻譜分析儀',
+  registryId: 'ASSET-001',
+  category: '量測組',
   epc: 'E280AABBCCDD',
 );
 
@@ -32,13 +32,13 @@ void main() {
       expect(_utcIsoRegex.hasMatch(map['ExportTime'] as String), isTrue);
     });
 
-    test('單筆 device：輸出包含 Id, EPC, ScanTime', () {
+    test('單筆 device：輸出包含 Uid, EPC, ScanTime', () {
       final result = ScanExportService.buildJsonString(
         devices: [_sampleDevice],
-        scanTimes: {_sampleDevice.id: DateTime.utc(2026, 5, 22, 6, 29, 54)},
+        scanTimes: {_sampleDevice.uid: DateTime.utc(2026, 5, 22, 6, 29, 54)},
       );
       final d = ((jsonDecode(result) as Map)['Devices'] as List).first as Map;
-      expect(d['Id'], 'dev-001');
+      expect(d['Uid'], 'dev-001');
       expect(d['EPC'], 'E280AABBCCDD');
       expect(d.containsKey('ScanTime'), isTrue);
     });
@@ -46,7 +46,7 @@ void main() {
     test('ScanTime 從 scanTimes map 取值', () {
       final result = ScanExportService.buildJsonString(
         devices: [_sampleDevice],
-        scanTimes: {_sampleDevice.id: DateTime.utc(2026, 1, 15, 8, 30, 0)},
+        scanTimes: {_sampleDevice.uid: DateTime.utc(2026, 1, 15, 8, 30, 0)},
       );
       final d = ((jsonDecode(result) as Map)['Devices'] as List).first as Map;
       expect(d['ScanTime'], '2026-01-15T08:30:00Z');
@@ -64,18 +64,18 @@ void main() {
 
     test('多筆 device → 各自獨立 ScanTime', () {
       const device2 = Device(
-        id: 'dev-002',
-        instrumentNumber: 'INS-002',
-        name: '萬用表',
-        assetNumber: 'ASSET-002',
-        unit: '測試組',
+        uid: 'dev-002',
+        serialCode: 'INS-002',
+        label: '萬用表',
+        registryId: 'ASSET-002',
+        category: '測試組',
         epc: 'E280DDEEFF00',
       );
       final result = ScanExportService.buildJsonString(
         devices: [_sampleDevice, device2],
         scanTimes: {
-          _sampleDevice.id: DateTime.utc(2026, 5, 1, 10, 0, 0),
-          device2.id: DateTime.utc(2026, 5, 1, 10, 0, 5),
+          _sampleDevice.uid: DateTime.utc(2026, 5, 1, 10, 0, 0),
+          device2.uid: DateTime.utc(2026, 5, 1, 10, 0, 5),
         },
       );
       final devices = ((jsonDecode(result) as Map)['Devices'] as List);
@@ -87,7 +87,7 @@ void main() {
       expect(
         () => jsonDecode(ScanExportService.buildJsonString(
           devices: [_sampleDevice],
-          scanTimes: {_sampleDevice.id: DateTime.utc(2026, 3, 10, 12, 0, 0)},
+          scanTimes: {_sampleDevice.uid: DateTime.utc(2026, 3, 10, 12, 0, 0)},
         )),
         returnsNormally,
       );
@@ -96,7 +96,7 @@ void main() {
     test('ScanTime 格式也符合 UTC ISO8601 秒級', () {
       final result = ScanExportService.buildJsonString(
         devices: [_sampleDevice],
-        scanTimes: {_sampleDevice.id: DateTime.utc(2026, 12, 31, 23, 59, 59)},
+        scanTimes: {_sampleDevice.uid: DateTime.utc(2026, 12, 31, 23, 59, 59)},
       );
       final d = ((jsonDecode(result) as Map)['Devices'] as List).first as Map;
       expect(_utcIsoRegex.hasMatch(d['ScanTime'] as String), isTrue);

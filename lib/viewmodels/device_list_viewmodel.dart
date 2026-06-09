@@ -28,10 +28,11 @@ class DeviceListState {
     int? lastImportedCount,
     bool clearError = false,
     bool clearLastImportedCount = false,
+    bool clearExportTime = false,
   }) {
     return DeviceListState(
       devices: devices ?? this.devices,
-      exportTime: exportTime ?? this.exportTime,
+      exportTime: clearExportTime ? null : (exportTime ?? this.exportTime),
       isImporting: isImporting ?? this.isImporting,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       lastImportedCount: clearLastImportedCount
@@ -56,7 +57,11 @@ class DeviceListViewModel extends Notifier<DeviceListState> {
       next.whenData((devices) => state = state.copyWith(devices: devices));
     });
     ref.listen(exportTimeStreamProvider, (_, next) {
-      next.whenData((time) => state = state.copyWith(exportTime: time));
+      next.whenData(
+        (time) => state = time != null
+            ? state.copyWith(exportTime: time)
+            : state.copyWith(clearExportTime: true),
+      );
     });
 
     return DeviceListState(
