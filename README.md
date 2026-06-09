@@ -42,6 +42,7 @@
 | 響應式尺寸 | flutter_screenutil |
 | CI/CD | GitHub Actions + Firebase App Distribution |
 | 多環境 | Build Flavor (dev / prod) |
+| 單元測試 | flutter_test |
 
 ---
 
@@ -49,25 +50,24 @@
 
 ```
 lib/
-├── core/            # 共用常數、工具
+├── core/             # 共用常數、工具
 ├── data/
-│   ├── database/    # Drift schema & generated code
-│   ├── models/      # 資料模型
-│   ├── repositories/# 資料存取層
-│   └── services/    # 業務邏輯服務
-├── pages/           # UI 頁面
-├── providers/       # Riverpod providers
-├── services/        # App 層服務（FCM 等）
-├── viewmodels/      # ViewModel（Riverpod Notifier）
-└── widgets/         # 共用元件
+│   ├── database/     # Drift schema & generated code
+│   ├── models/       # 資料模型
+│   ├── repositories/ # 資料存取層
+│   └── services/     # 業務邏輯服務
+├── pages/            # UI 頁面
+├── providers/        # Riverpod providers
+├── services/         # App 層服務（FCM 等）
+├── viewmodels/       # ViewModel（Riverpod Notifier）
+└── widgets/          # 共用元件
 
-android/
-└── app/src/main/kotlin/
-    └── rfid/
-        ├── MainActivity.kt
-        ├── RfidPlugin.kt        # MethodChannel / EventChannel 路由
-        ├── RfidController.kt    # 硬體指令封裝
-        └── RfidEventListener.kt
+android/app/src/main/kotlin/
+└── rfid/
+    ├── MainActivity.kt
+    ├── RfidPlugin.kt        # MethodChannel / EventChannel entry point
+    ├── RfidController.kt    # 連線 / 掃描 / 斷線指令
+    └── RfidEventListener.kt # SDK 事件 → lambda
 ```
 
 **採用 MVVM + Repository Pattern**
@@ -180,6 +180,23 @@ MigrationStrategy get migration => MigrationStrategy(
 
 ---
 
+## 單元測試
+
+針對核心業務邏輯撰寫 unit test，覆蓋資料解析、匯出格式、掃描狀態管理與檔案操作：
+
+| 測試檔 | 涵蓋範圍 |
+|--------|----------|
+| `device_test.dart` | `Device.fromJson` 欄位解析、EPC 大小寫正規化、缺少必要欄位時拋出例外 |
+| `scan_export_service_test.dart` | JSON 輸出格式、UTC 時間格式、多筆設備各自 ScanTime |
+| `scan_file_service_test.dart` | 改名驗證、重複檔名、非法字元、刪除操作 |
+| `scan_session_controller_test.dart` | 掃描開關、去重邏輯、clearAll、addManualDevice |
+
+```bash
+flutter test
+```
+
+---
+
 ## Key Features
 
 - **RFID 掃描** — 連線後模擬真實硬體掃描流程，每筆 tag 透過 MethodChannel 觸發 Kotlin 原生震動回饋，並進行去重複邏輯
@@ -222,10 +239,9 @@ flutter run --flavor dev
 flutter run --flavor prod
 ```
 
-**測試**
+**靜態分析**
 
 ```bash
-flutter test
 flutter analyze
 ```
 
