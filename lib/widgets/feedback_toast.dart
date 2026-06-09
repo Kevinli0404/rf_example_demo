@@ -33,13 +33,13 @@ void _showToast(
   BuildContext context, {
   required Widget child,
   required Duration duration,
-  double topOffset = 116,
+  double bottomOffset = 116,
 }) {
   final overlay = Overlay.of(context);
   late OverlayEntry entry;
   entry = OverlayEntry(
     builder: (_) => Positioned(
-      top: topOffset.h,
+      bottom: bottomOffset.h,
       left: 0,
       right: 0,
       child: Center(
@@ -65,26 +65,17 @@ class _SuccessToast extends StatelessWidget {
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
-        color: AppColors.lightGreen,
+        color: AppColors.green.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(16.w),
-        border: Border.all(color: AppColors.deepGreen, width: 1),
+        border: Border.all(color: AppColors.green, width: 1),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.check_rounded, color: AppColors.deepGreen, size: 20.w),
-          SizedBox(width: 8.w),
-          Flexible(
-            child: Text(
-              message,
-              style: AppTextStyle.regular14.copyWith(
-                color: AppColors.deepGreen,
-                height: 1,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
+      child: Text(
+        message,
+        style: AppTextStyle.regular14.copyWith(
+          color: AppColors.green,
+          height: 1,
+        ),
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
