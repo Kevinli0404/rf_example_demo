@@ -24,7 +24,6 @@ void main() async {
   // FCM 初始化
   await FcmService.init(
     onForegroundMessage: (RemoteMessage message) {
-      // 前景收到推播時，由 MyApp 的 GlobalKey 顯示 SnackBar
       final title = message.notification?.title ?? '新通知';
       final body = message.notification?.body ?? '';
       MyApp.showNotificationBanner(title: title, body: body);
