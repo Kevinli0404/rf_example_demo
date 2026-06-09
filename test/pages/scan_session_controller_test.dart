@@ -19,20 +19,20 @@ class MockDeviceRepository extends Fake implements DeviceRepository {
 }
 
 const _deviceA = Device(
-  id: 'dev-001',
-  instrumentNumber: 'INS-001',
-  name: '頻譜分析儀',
-  assetNumber: 'ASSET-001',
-  unit: '量測組',
+  uid: 'dev-001',
+  serialCode: 'INS-001',
+  label: '頻譜分析儀',
+  registryId: 'ASSET-001',
+  category: '量測組',
   epc: 'E280AABBCCDD',
 );
 
 const _deviceB = Device(
-  id: 'dev-002',
-  instrumentNumber: 'INS-002',
-  name: '萬用表',
-  assetNumber: 'ASSET-002',
-  unit: '量測組',
+  uid: 'dev-002',
+  serialCode: 'INS-002',
+  label: '萬用表',
+  registryId: 'ASSET-002',
+  category: '量測組',
   epc: 'E280001122',
 );
 
@@ -201,12 +201,12 @@ void main() {
     test('addManualDevice() 加入設備', () {
       controller.addManualDevice(_deviceA);
       expect(controller.scannedDevices.length, 1);
-      expect(controller.scannedDevices.first.id, 'dev-001');
+      expect(controller.scannedDevices.first.uid, 'dev-001');
     });
 
     test('重複 EPC 不加第二次', () {
       controller.addManualDevice(_deviceA);
-      controller.addManualDevice(_deviceA); // 同一個 device
+      controller.addManualDevice(_deviceA);
       expect(controller.scannedDevices.length, 1);
     });
 
@@ -224,16 +224,16 @@ void main() {
 
     test('addManualDevice() 後 scanTimes 有該 device 的時間', () {
       controller.addManualDevice(_deviceA);
-      expect(controller.scanTimes.containsKey(_deviceA.id), isTrue);
+      expect(controller.scanTimes.containsKey(_deviceA.uid), isTrue);
     });
 
     test('EPC 大小寫視為相同（去重）', () {
       const deviceLower = Device(
-        id: 'dev-999',
-        instrumentNumber: 'INS-999',
-        name: '重複設備',
-        assetNumber: 'ASSET-999',
-        unit: '測試組',
+        uid: 'dev-999',
+        serialCode: 'INS-999',
+        label: '重複設備',
+        registryId: 'ASSET-999',
+        category: '測試組',
         epc: 'e280aabbccdd',
       );
       controller.addManualDevice(_deviceA);

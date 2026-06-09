@@ -107,7 +107,7 @@ class ScanFileService {
       final devices = raw['Devices'] as List;
       for (final d in devices) {
         if (d is! Map) return null;
-        if (d['Id'] == null || d['EPC'] == null || d['ScanTime'] == null) {
+        if (d['Uid'] == null || d['EPC'] == null || d['ScanTime'] == null) {
           return null;
         }
       }
@@ -154,8 +154,8 @@ class ScanFileService {
       if (device != null) {
         entries.add(
           FileDeviceEntry(
-            name: device.name,
-            instrument: device.instrumentNumber,
+            name: device.label,
+            instrument: device.serialCode,
           ),
         );
       } else {

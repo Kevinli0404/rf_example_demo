@@ -152,7 +152,7 @@ class _DeviceListPageState extends ConsumerState<DeviceListPage> {
               final filtered =
                   allDevices
                       .where(
-                        (d) => _search.matchesAny([d.name, d.instrumentNumber]),
+                        (d) => _search.matchesAny([d.label, d.serialCode]),
                       )
                       .toList();
 
@@ -372,7 +372,7 @@ class _DeviceListPageState extends ConsumerState<DeviceListPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  d.name,
+                  d.label,
                   style: AppTextStyle.medium16.copyWith(color: AppColors.white),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -388,7 +388,7 @@ class _DeviceListPageState extends ConsumerState<DeviceListPage> {
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
-                        d.instrumentNumber,
+                        d.serialCode,
                         style: AppTextStyle.regular12.copyWith(
                           color: AppColors.midGrey,
                         ),

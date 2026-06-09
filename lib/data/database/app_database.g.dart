@@ -9,50 +9,52 @@ class $DevicesTable extends Devices
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DevicesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _uidMeta = const VerificationMeta('uid');
   @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
+  late final GeneratedColumn<String> uid = GeneratedColumn<String>(
+    'uid',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _instrumentNumberMeta = const VerificationMeta(
-    'instrumentNumber',
+  static const VerificationMeta _serialCodeMeta = const VerificationMeta(
+    'serialCode',
   );
   @override
-  late final GeneratedColumn<String> instrumentNumber = GeneratedColumn<String>(
-    'instrument_number',
+  late final GeneratedColumn<String> serialCode = GeneratedColumn<String>(
+    'serial_code',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _labelMeta = const VerificationMeta('label');
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
+  late final GeneratedColumn<String> label = GeneratedColumn<String>(
+    'label',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _assetNumberMeta = const VerificationMeta(
-    'assetNumber',
+  static const VerificationMeta _registryIdMeta = const VerificationMeta(
+    'registryId',
   );
   @override
-  late final GeneratedColumn<String> assetNumber = GeneratedColumn<String>(
-    'asset_number',
+  late final GeneratedColumn<String> registryId = GeneratedColumn<String>(
+    'registry_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
   @override
-  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
-    'unit',
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -69,11 +71,11 @@ class $DevicesTable extends Devices
   );
   @override
   List<GeneratedColumn> get $columns => [
-    id,
-    instrumentNumber,
-    name,
-    assetNumber,
-    unit,
+    uid,
+    serialCode,
+    label,
+    registryId,
+    category,
     epc,
   ];
   @override
@@ -88,48 +90,45 @@ class $DevicesTable extends Devices
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('instrument_number')) {
+    if (data.containsKey('uid')) {
       context.handle(
-        _instrumentNumberMeta,
-        instrumentNumber.isAcceptableOrUnknown(
-          data['instrument_number']!,
-          _instrumentNumberMeta,
-        ),
+        _uidMeta,
+        uid.isAcceptableOrUnknown(data['uid']!, _uidMeta),
       );
     } else if (isInserting) {
-      context.missing(_instrumentNumberMeta);
+      context.missing(_uidMeta);
     }
-    if (data.containsKey('name')) {
+    if (data.containsKey('serial_code')) {
       context.handle(
-        _nameMeta,
-        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+        _serialCodeMeta,
+        serialCode.isAcceptableOrUnknown(data['serial_code']!, _serialCodeMeta),
       );
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_serialCodeMeta);
     }
-    if (data.containsKey('asset_number')) {
+    if (data.containsKey('label')) {
       context.handle(
-        _assetNumberMeta,
-        assetNumber.isAcceptableOrUnknown(
-          data['asset_number']!,
-          _assetNumberMeta,
-        ),
+        _labelMeta,
+        label.isAcceptableOrUnknown(data['label']!, _labelMeta),
       );
     } else if (isInserting) {
-      context.missing(_assetNumberMeta);
+      context.missing(_labelMeta);
     }
-    if (data.containsKey('unit')) {
+    if (data.containsKey('registry_id')) {
       context.handle(
-        _unitMeta,
-        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+        _registryIdMeta,
+        registryId.isAcceptableOrUnknown(data['registry_id']!, _registryIdMeta),
       );
     } else if (isInserting) {
-      context.missing(_unitMeta);
+      context.missing(_registryIdMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
     }
     if (data.containsKey('epc')) {
       context.handle(
@@ -143,30 +142,30 @@ class $DevicesTable extends Devices
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {uid};
   @override
   DeviceEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DeviceEntity(
-      id: attachedDatabase.typeMapping.read(
+      uid: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}id'],
+        data['${effectivePrefix}uid'],
       )!,
-      instrumentNumber: attachedDatabase.typeMapping.read(
+      serialCode: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}instrument_number'],
+        data['${effectivePrefix}serial_code'],
       )!,
-      name: attachedDatabase.typeMapping.read(
+      label: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}name'],
+        data['${effectivePrefix}label'],
       )!,
-      assetNumber: attachedDatabase.typeMapping.read(
+      registryId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}asset_number'],
+        data['${effectivePrefix}registry_id'],
       )!,
-      unit: attachedDatabase.typeMapping.read(
+      category: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}unit'],
+        data['${effectivePrefix}category'],
       )!,
       epc: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -182,50 +181,39 @@ class $DevicesTable extends Devices
 }
 
 class DeviceEntity extends DataClass implements Insertable<DeviceEntity> {
-  /// RFID 匯出的 Id (GUID),primary key
-  final String id;
-
-  /// 儀器編號
-  final String instrumentNumber;
-
-  /// 設備名稱
-  final String name;
-
-  /// 財產編號
-  final String assetNumber;
-
-  /// 單位
-  final String unit;
-
-  /// EPC(RFID HEX 值,統一存大寫)
+  final String uid;
+  final String serialCode;
+  final String label;
+  final String registryId;
+  final String category;
   final String epc;
   const DeviceEntity({
-    required this.id,
-    required this.instrumentNumber,
-    required this.name,
-    required this.assetNumber,
-    required this.unit,
+    required this.uid,
+    required this.serialCode,
+    required this.label,
+    required this.registryId,
+    required this.category,
     required this.epc,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['instrument_number'] = Variable<String>(instrumentNumber);
-    map['name'] = Variable<String>(name);
-    map['asset_number'] = Variable<String>(assetNumber);
-    map['unit'] = Variable<String>(unit);
+    map['uid'] = Variable<String>(uid);
+    map['serial_code'] = Variable<String>(serialCode);
+    map['label'] = Variable<String>(label);
+    map['registry_id'] = Variable<String>(registryId);
+    map['category'] = Variable<String>(category);
     map['epc'] = Variable<String>(epc);
     return map;
   }
 
   DevicesCompanion toCompanion(bool nullToAbsent) {
     return DevicesCompanion(
-      id: Value(id),
-      instrumentNumber: Value(instrumentNumber),
-      name: Value(name),
-      assetNumber: Value(assetNumber),
-      unit: Value(unit),
+      uid: Value(uid),
+      serialCode: Value(serialCode),
+      label: Value(label),
+      registryId: Value(registryId),
+      category: Value(category),
       epc: Value(epc),
     );
   }
@@ -236,11 +224,11 @@ class DeviceEntity extends DataClass implements Insertable<DeviceEntity> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DeviceEntity(
-      id: serializer.fromJson<String>(json['id']),
-      instrumentNumber: serializer.fromJson<String>(json['instrumentNumber']),
-      name: serializer.fromJson<String>(json['name']),
-      assetNumber: serializer.fromJson<String>(json['assetNumber']),
-      unit: serializer.fromJson<String>(json['unit']),
+      uid: serializer.fromJson<String>(json['uid']),
+      serialCode: serializer.fromJson<String>(json['serialCode']),
+      label: serializer.fromJson<String>(json['label']),
+      registryId: serializer.fromJson<String>(json['registryId']),
+      category: serializer.fromJson<String>(json['category']),
       epc: serializer.fromJson<String>(json['epc']),
     );
   }
@@ -248,41 +236,41 @@ class DeviceEntity extends DataClass implements Insertable<DeviceEntity> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'instrumentNumber': serializer.toJson<String>(instrumentNumber),
-      'name': serializer.toJson<String>(name),
-      'assetNumber': serializer.toJson<String>(assetNumber),
-      'unit': serializer.toJson<String>(unit),
+      'uid': serializer.toJson<String>(uid),
+      'serialCode': serializer.toJson<String>(serialCode),
+      'label': serializer.toJson<String>(label),
+      'registryId': serializer.toJson<String>(registryId),
+      'category': serializer.toJson<String>(category),
       'epc': serializer.toJson<String>(epc),
     };
   }
 
   DeviceEntity copyWith({
-    String? id,
-    String? instrumentNumber,
-    String? name,
-    String? assetNumber,
-    String? unit,
+    String? uid,
+    String? serialCode,
+    String? label,
+    String? registryId,
+    String? category,
     String? epc,
   }) => DeviceEntity(
-    id: id ?? this.id,
-    instrumentNumber: instrumentNumber ?? this.instrumentNumber,
-    name: name ?? this.name,
-    assetNumber: assetNumber ?? this.assetNumber,
-    unit: unit ?? this.unit,
+    uid: uid ?? this.uid,
+    serialCode: serialCode ?? this.serialCode,
+    label: label ?? this.label,
+    registryId: registryId ?? this.registryId,
+    category: category ?? this.category,
     epc: epc ?? this.epc,
   );
   DeviceEntity copyWithCompanion(DevicesCompanion data) {
     return DeviceEntity(
-      id: data.id.present ? data.id.value : this.id,
-      instrumentNumber: data.instrumentNumber.present
-          ? data.instrumentNumber.value
-          : this.instrumentNumber,
-      name: data.name.present ? data.name.value : this.name,
-      assetNumber: data.assetNumber.present
-          ? data.assetNumber.value
-          : this.assetNumber,
-      unit: data.unit.present ? data.unit.value : this.unit,
+      uid: data.uid.present ? data.uid.value : this.uid,
+      serialCode: data.serialCode.present
+          ? data.serialCode.value
+          : this.serialCode,
+      label: data.label.present ? data.label.value : this.label,
+      registryId: data.registryId.present
+          ? data.registryId.value
+          : this.registryId,
+      category: data.category.present ? data.category.value : this.category,
       epc: data.epc.present ? data.epc.value : this.epc,
     );
   }
@@ -290,11 +278,11 @@ class DeviceEntity extends DataClass implements Insertable<DeviceEntity> {
   @override
   String toString() {
     return (StringBuffer('DeviceEntity(')
-          ..write('id: $id, ')
-          ..write('instrumentNumber: $instrumentNumber, ')
-          ..write('name: $name, ')
-          ..write('assetNumber: $assetNumber, ')
-          ..write('unit: $unit, ')
+          ..write('uid: $uid, ')
+          ..write('serialCode: $serialCode, ')
+          ..write('label: $label, ')
+          ..write('registryId: $registryId, ')
+          ..write('category: $category, ')
           ..write('epc: $epc')
           ..write(')'))
         .toString();
@@ -302,85 +290,85 @@ class DeviceEntity extends DataClass implements Insertable<DeviceEntity> {
 
   @override
   int get hashCode =>
-      Object.hash(id, instrumentNumber, name, assetNumber, unit, epc);
+      Object.hash(uid, serialCode, label, registryId, category, epc);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DeviceEntity &&
-          other.id == this.id &&
-          other.instrumentNumber == this.instrumentNumber &&
-          other.name == this.name &&
-          other.assetNumber == this.assetNumber &&
-          other.unit == this.unit &&
+          other.uid == this.uid &&
+          other.serialCode == this.serialCode &&
+          other.label == this.label &&
+          other.registryId == this.registryId &&
+          other.category == this.category &&
           other.epc == this.epc);
 }
 
 class DevicesCompanion extends UpdateCompanion<DeviceEntity> {
-  final Value<String> id;
-  final Value<String> instrumentNumber;
-  final Value<String> name;
-  final Value<String> assetNumber;
-  final Value<String> unit;
+  final Value<String> uid;
+  final Value<String> serialCode;
+  final Value<String> label;
+  final Value<String> registryId;
+  final Value<String> category;
   final Value<String> epc;
   final Value<int> rowid;
   const DevicesCompanion({
-    this.id = const Value.absent(),
-    this.instrumentNumber = const Value.absent(),
-    this.name = const Value.absent(),
-    this.assetNumber = const Value.absent(),
-    this.unit = const Value.absent(),
+    this.uid = const Value.absent(),
+    this.serialCode = const Value.absent(),
+    this.label = const Value.absent(),
+    this.registryId = const Value.absent(),
+    this.category = const Value.absent(),
     this.epc = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   DevicesCompanion.insert({
-    required String id,
-    required String instrumentNumber,
-    required String name,
-    required String assetNumber,
-    required String unit,
+    required String uid,
+    required String serialCode,
+    required String label,
+    required String registryId,
+    required String category,
     required String epc,
     this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       instrumentNumber = Value(instrumentNumber),
-       name = Value(name),
-       assetNumber = Value(assetNumber),
-       unit = Value(unit),
+  }) : uid = Value(uid),
+       serialCode = Value(serialCode),
+       label = Value(label),
+       registryId = Value(registryId),
+       category = Value(category),
        epc = Value(epc);
   static Insertable<DeviceEntity> custom({
-    Expression<String>? id,
-    Expression<String>? instrumentNumber,
-    Expression<String>? name,
-    Expression<String>? assetNumber,
-    Expression<String>? unit,
+    Expression<String>? uid,
+    Expression<String>? serialCode,
+    Expression<String>? label,
+    Expression<String>? registryId,
+    Expression<String>? category,
     Expression<String>? epc,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (instrumentNumber != null) 'instrument_number': instrumentNumber,
-      if (name != null) 'name': name,
-      if (assetNumber != null) 'asset_number': assetNumber,
-      if (unit != null) 'unit': unit,
+      if (uid != null) 'uid': uid,
+      if (serialCode != null) 'serial_code': serialCode,
+      if (label != null) 'label': label,
+      if (registryId != null) 'registry_id': registryId,
+      if (category != null) 'category': category,
       if (epc != null) 'epc': epc,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   DevicesCompanion copyWith({
-    Value<String>? id,
-    Value<String>? instrumentNumber,
-    Value<String>? name,
-    Value<String>? assetNumber,
-    Value<String>? unit,
+    Value<String>? uid,
+    Value<String>? serialCode,
+    Value<String>? label,
+    Value<String>? registryId,
+    Value<String>? category,
     Value<String>? epc,
     Value<int>? rowid,
   }) {
     return DevicesCompanion(
-      id: id ?? this.id,
-      instrumentNumber: instrumentNumber ?? this.instrumentNumber,
-      name: name ?? this.name,
-      assetNumber: assetNumber ?? this.assetNumber,
-      unit: unit ?? this.unit,
+      uid: uid ?? this.uid,
+      serialCode: serialCode ?? this.serialCode,
+      label: label ?? this.label,
+      registryId: registryId ?? this.registryId,
+      category: category ?? this.category,
       epc: epc ?? this.epc,
       rowid: rowid ?? this.rowid,
     );
@@ -389,20 +377,20 @@ class DevicesCompanion extends UpdateCompanion<DeviceEntity> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
+    if (uid.present) {
+      map['uid'] = Variable<String>(uid.value);
     }
-    if (instrumentNumber.present) {
-      map['instrument_number'] = Variable<String>(instrumentNumber.value);
+    if (serialCode.present) {
+      map['serial_code'] = Variable<String>(serialCode.value);
     }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
+    if (label.present) {
+      map['label'] = Variable<String>(label.value);
     }
-    if (assetNumber.present) {
-      map['asset_number'] = Variable<String>(assetNumber.value);
+    if (registryId.present) {
+      map['registry_id'] = Variable<String>(registryId.value);
     }
-    if (unit.present) {
-      map['unit'] = Variable<String>(unit.value);
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
     }
     if (epc.present) {
       map['epc'] = Variable<String>(epc.value);
@@ -416,11 +404,11 @@ class DevicesCompanion extends UpdateCompanion<DeviceEntity> {
   @override
   String toString() {
     return (StringBuffer('DevicesCompanion(')
-          ..write('id: $id, ')
-          ..write('instrumentNumber: $instrumentNumber, ')
-          ..write('name: $name, ')
-          ..write('assetNumber: $assetNumber, ')
-          ..write('unit: $unit, ')
+          ..write('uid: $uid, ')
+          ..write('serialCode: $serialCode, ')
+          ..write('label: $label, ')
+          ..write('registryId: $registryId, ')
+          ..write('category: $category, ')
           ..write('epc: $epc, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -650,21 +638,21 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 
 typedef $$DevicesTableCreateCompanionBuilder =
     DevicesCompanion Function({
-      required String id,
-      required String instrumentNumber,
-      required String name,
-      required String assetNumber,
-      required String unit,
+      required String uid,
+      required String serialCode,
+      required String label,
+      required String registryId,
+      required String category,
       required String epc,
       Value<int> rowid,
     });
 typedef $$DevicesTableUpdateCompanionBuilder =
     DevicesCompanion Function({
-      Value<String> id,
-      Value<String> instrumentNumber,
-      Value<String> name,
-      Value<String> assetNumber,
-      Value<String> unit,
+      Value<String> uid,
+      Value<String> serialCode,
+      Value<String> label,
+      Value<String> registryId,
+      Value<String> category,
       Value<String> epc,
       Value<int> rowid,
     });
@@ -678,28 +666,28 @@ class $$DevicesTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(
-    column: $table.id,
+  ColumnFilters<String> get uid => $composableBuilder(
+    column: $table.uid,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get instrumentNumber => $composableBuilder(
-    column: $table.instrumentNumber,
+  ColumnFilters<String> get serialCode => $composableBuilder(
+    column: $table.serialCode,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get name => $composableBuilder(
-    column: $table.name,
+  ColumnFilters<String> get label => $composableBuilder(
+    column: $table.label,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get assetNumber => $composableBuilder(
-    column: $table.assetNumber,
+  ColumnFilters<String> get registryId => $composableBuilder(
+    column: $table.registryId,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get unit => $composableBuilder(
-    column: $table.unit,
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -718,28 +706,28 @@ class $$DevicesTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(
-    column: $table.id,
+  ColumnOrderings<String> get uid => $composableBuilder(
+    column: $table.uid,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get instrumentNumber => $composableBuilder(
-    column: $table.instrumentNumber,
+  ColumnOrderings<String> get serialCode => $composableBuilder(
+    column: $table.serialCode,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get name => $composableBuilder(
-    column: $table.name,
+  ColumnOrderings<String> get label => $composableBuilder(
+    column: $table.label,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get assetNumber => $composableBuilder(
-    column: $table.assetNumber,
+  ColumnOrderings<String> get registryId => $composableBuilder(
+    column: $table.registryId,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get unit => $composableBuilder(
-    column: $table.unit,
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -758,24 +746,24 @@ class $$DevicesTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get uid =>
+      $composableBuilder(column: $table.uid, builder: (column) => column);
 
-  GeneratedColumn<String> get instrumentNumber => $composableBuilder(
-    column: $table.instrumentNumber,
+  GeneratedColumn<String> get serialCode => $composableBuilder(
+    column: $table.serialCode,
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => column);
+  GeneratedColumn<String> get label =>
+      $composableBuilder(column: $table.label, builder: (column) => column);
 
-  GeneratedColumn<String> get assetNumber => $composableBuilder(
-    column: $table.assetNumber,
+  GeneratedColumn<String> get registryId => $composableBuilder(
+    column: $table.registryId,
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get unit =>
-      $composableBuilder(column: $table.unit, builder: (column) => column);
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
 
   GeneratedColumn<String> get epc =>
       $composableBuilder(column: $table.epc, builder: (column) => column);
@@ -812,37 +800,37 @@ class $$DevicesTableTableManager
               $$DevicesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
-                Value<String> id = const Value.absent(),
-                Value<String> instrumentNumber = const Value.absent(),
-                Value<String> name = const Value.absent(),
-                Value<String> assetNumber = const Value.absent(),
-                Value<String> unit = const Value.absent(),
+                Value<String> uid = const Value.absent(),
+                Value<String> serialCode = const Value.absent(),
+                Value<String> label = const Value.absent(),
+                Value<String> registryId = const Value.absent(),
+                Value<String> category = const Value.absent(),
                 Value<String> epc = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => DevicesCompanion(
-                id: id,
-                instrumentNumber: instrumentNumber,
-                name: name,
-                assetNumber: assetNumber,
-                unit: unit,
+                uid: uid,
+                serialCode: serialCode,
+                label: label,
+                registryId: registryId,
+                category: category,
                 epc: epc,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                required String id,
-                required String instrumentNumber,
-                required String name,
-                required String assetNumber,
-                required String unit,
+                required String uid,
+                required String serialCode,
+                required String label,
+                required String registryId,
+                required String category,
                 required String epc,
                 Value<int> rowid = const Value.absent(),
               }) => DevicesCompanion.insert(
-                id: id,
-                instrumentNumber: instrumentNumber,
-                name: name,
-                assetNumber: assetNumber,
-                unit: unit,
+                uid: uid,
+                serialCode: serialCode,
+                label: label,
+                registryId: registryId,
+                category: category,
                 epc: epc,
                 rowid: rowid,
               ),

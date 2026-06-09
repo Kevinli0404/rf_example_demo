@@ -65,7 +65,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
           final filtered =
               allDevices
                   .where(
-                    (d) => _search.matchesAny([d.name, d.instrumentNumber]),
+                    (d) => _search.matchesAny([d.label, d.serialCode]),
                   )
                   .toList();
 
@@ -280,7 +280,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   }
 
   Widget _buildDeviceCard(Device device, int index) {
-    final isUnknown = isUnknownDeviceId(device.id);
+    final isUnknown = isUnknownDeviceId(device.uid);
     final accentColor = isUnknown ? AppColors.secondary : AppColors.primary;
     final epcShort = device.epc.length > 12
         ? '${device.epc.substring(0, 12)}…'
@@ -322,7 +322,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  device.name,
+                  device.label,
                   style: AppTextStyle.medium14.copyWith(
                     color: isUnknown ? AppColors.secondary : AppColors.white,
                   ),
@@ -331,7 +331,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  device.instrumentNumber,
+                  device.serialCode,
                   style: AppTextStyle.regular12.copyWith(
                     color: AppColors.textGreyIt,
                   ),

@@ -15,7 +15,21 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onUpgrade: (m, from, to) async {
+        if (from < 2) {
+          // Column names changed in v2; drop and recreate devices table.
+          // No user data is preserved — devices are re-imported from JSON.
+          await m.drop(devices);
+          await m.createTable(devices);
+        }
+      },
+    );
+  }
 
   static QueryExecutor _openConnection() {
     return driftDatabase(name: 'rf_example_db');

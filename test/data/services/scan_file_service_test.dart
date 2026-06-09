@@ -11,7 +11,7 @@ Future<File> _writeValidScanFile(Directory dir, String filename) async {
       'ExportTime': '2026-05-01T10:00:00Z',
       'Devices': [
         {
-          'Id': 'dev-001',
+          'Uid': 'dev-001',
           'EPC': 'E280AABBCCDD',
           'ScanTime': '2026-05-01T09:59:00Z',
         },
@@ -33,7 +33,7 @@ Future<File> _writeMissingFieldFile(Directory dir, String filename) async {
     jsonEncode({
       'ExportTime': '2026-05-01T10:00:00Z',
       'Devices': [
-        {'Id': 'dev-001', 'EPC': 'E280AABBCCDD'},
+        {'Uid': 'dev-001', 'EPC': 'E280AABBCCDD'},
       ],
     }),
   );
@@ -206,13 +206,13 @@ void main() {
       if (await tempDir.exists()) await tempDir.delete(recursive: true);
     });
 
-    test('合法格式：包含必要欄位 ExportTime / Devices[].Id/EPC/ScanTime', () async {
+    test('合法格式：包含必要欄位 ExportTime / Devices[].Uid/EPC/ScanTime', () async {
       final file = await _writeValidScanFile(tempDir, 'valid.txt');
       final raw = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
       expect(raw.containsKey('ExportTime'), isTrue);
       expect(raw['Devices'], isA<List>());
       final d = (raw['Devices'] as List).first as Map;
-      expect(d['Id'], isNotNull);
+      expect(d['Uid'], isNotNull);
       expect(d['EPC'], isNotNull);
       expect(d['ScanTime'], isNotNull);
     });

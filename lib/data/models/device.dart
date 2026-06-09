@@ -1,55 +1,55 @@
 import '../database/app_database.dart';
 
 class Device {
-  final String id;
-  final String instrumentNumber;
-  final String name;
-  final String assetNumber;
-  final String unit;
+  final String uid;
+  final String serialCode;
+  final String label;
+  final String registryId;
+  final String category;
   final String epc;
 
   const Device({
-    required this.id,
-    required this.instrumentNumber,
-    required this.name,
-    required this.assetNumber,
-    required this.unit,
+    required this.uid,
+    required this.serialCode,
+    required this.label,
+    required this.registryId,
+    required this.category,
     required this.epc,
   });
 
   factory Device.fromJson(Map<String, dynamic> json) {
     return Device(
-      id: json['Id'] as String,
-      instrumentNumber: json['InstrumentNumber'] as String,
-      name: json['Name'] as String,
-      assetNumber: json['AssetNumber'] as String,
-      unit: json['Unit'] as String,
+      uid: json['Uid'] as String,
+      serialCode: json['SerialCode'] as String,
+      label: json['Label'] as String,
+      registryId: json['RegistryId'] as String,
+      category: json['Category'] as String,
       epc: (json['EPC'] as String).toUpperCase(),
     );
   }
 
   factory Device.fromEntity(DeviceEntity entity) {
     return Device(
-      id: entity.id,
-      instrumentNumber: entity.instrumentNumber,
-      name: entity.name,
-      assetNumber: entity.assetNumber,
-      unit: entity.unit,
+      uid: entity.uid,
+      serialCode: entity.serialCode,
+      label: entity.label,
+      registryId: entity.registryId,
+      category: entity.category,
       epc: entity.epc,
     );
   }
 
   DevicesCompanion toCompanion() {
     return DevicesCompanion.insert(
-      id: id,
-      instrumentNumber: instrumentNumber,
-      name: name,
-      assetNumber: assetNumber,
-      unit: unit,
+      uid: uid,
+      serialCode: serialCode,
+      label: label,
+      registryId: registryId,
+      category: category,
       epc: epc,
     );
   }
 
   @override
-  String toString() => 'Device(id: $id, name: $name)';
+  String toString() => 'Device(uid: $uid, label: $label)';
 }
